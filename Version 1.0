@@ -1,0 +1,126 @@
+import random
+
+# Global variables
+player = "X"
+Player_val = 0
+#copy and paste your code to create the board as a 2D list
+board = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
+Not_valid_move = True
+row = 0
+col = 0
+
+
+#Copy and paste your function definitions from the previous activities:
+def is_valid_move(row, col):
+    if (row > 2 or col > 2):
+        print("You must enter a valid move.")
+        return False
+    elif (row < 0 or col < 0):
+        print("You must enter a valid move.")
+        return False
+    elif board[row][col] != ' ':
+        print("You must enter a valid move.")
+        return False
+    else:
+        return True
+
+
+def place_player(player, row, col):
+    if player == "X":
+        board[row][col] = player
+        player = "O"
+        print(print_board(board))
+    elif player == "O":
+        board[row][col] = player
+        player = "X"
+
+#Make the code run the NPC output to see if it is about to overlay
+#over if I already put an X on that spot.
+def take_turn(player):
+    if player == "O":
+        print("It's player O's turn!")
+        row = random.randint(0,2)
+        col = random.randint(0,2)
+        while is_valid_move(row, col) != True:
+            row = random.randint(0,2)
+            col = random.randint(0,2)
+        place_player(player, row, col)
+
+    elif player == "X":
+        print("It's player X's turn!")
+        row = int(input("Row: "))
+        col = int(input("Column: "))
+        while is_valid_move(row, col) != True:
+            row = int(input("Row: "))
+            col = int(input("Column: "))
+        place_player(player, row, col)
+        
+def print_board(board):
+    Board_len = len(board)
+    x = 0
+    for x in range(0, Board_len):
+        print(board[x])
+
+#Checks to see if any player has won the game
+def game_is_over(board):
+    for i in range(3):
+        # Check horizontal
+        if board[i][0] == board[i][1] == board[i][2] \
+            and board[i][0] != " ":
+            print_board(board)
+            print(board[i][0] + " wins!")
+            return True
+
+        # Check vertical
+        if board[0][i] == board[1][i] == board[2][i] \
+            and board[0][i] != " ":
+            print_board(board)
+            print(board[0][i] + " wins!")
+            return True
+
+    # Check diagonals
+    if board[0][0] == board[1][1] == board[2][2] \
+        and board[0][0] != " ":
+        print_board(board)
+        print(board[0][0] + " wins!")
+        return True
+
+    if board[2][0] == board[1][1] == board[0][2] \
+        and board[2][0] != " ":
+        print_board(board)
+        print(board[2][0] + " wins!")
+        return True
+
+    # Check tie
+    if " " not in board[0] and " " not in board[1] \
+        and " " not in board[2]:
+        print_board(board)
+        print("Tie game!")
+        return True
+
+    # Not over yet!
+    return False
+
+
+#Program Start
+
+#Print the board
+
+#Just call each function manually
+#Write the game loop here
+game_won = False
+
+while game_won == False:
+    print_board(board)
+    if Player_val % 2 == 0:
+        player = "X"
+        take_turn(player)
+        Player_val += 1
+        
+
+    elif Player_val % 2 != 0:
+        player = "O"
+        take_turn(player)
+        Player_val += 1
+        
+    game_won = game_is_over(board)
